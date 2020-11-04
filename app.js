@@ -15,7 +15,6 @@ var app = express();
 
 
 require('dotenv').config();
-require('./config/passport')
 
 //---------------------CONNECTING TO MONGO DB-------------------
 
@@ -40,6 +39,7 @@ hbs.registerPartials(__dirname+'/views/partials')
 
 app.use(express.static(path.join(__dirname,'public'))); 
 
+require('./config/passport')
 
 //---------------------CONNECTING TO MONGO DB-------------------
 // app.use(bodyParser.json)
@@ -63,9 +63,19 @@ app.use(function (req, res, next) {
     next();
   });
 
+
+  app.use(function(req,res,next){
+      res.locals.login = req.isAuthenticated();
+      next();
+  })
+  
 //ROUTES
-var routes= require('./routes/index.js');
-app.use('/', routes);
+var index= require('./routes/index.js');
+var userRoutes = require('./routes/user')
+
+
+app.use('/user', userRoutes);
+app.use('/', index);
 
 
 
