@@ -18,7 +18,7 @@ module.exports = function Cart(oldCart){
     this.generatedArray = function(){
         var arr =[];
         for(var id in this.items){
-            arr.push(ths.tems[id]);
+            arr.push(this.items[id]);
         }
         return arr;
     };
