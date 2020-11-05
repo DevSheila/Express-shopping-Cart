@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.3",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
@@ -24,13 +25,15 @@
     "express-session": "^1.17.1",
     "express-validator": "^6.6.1",
     "fs": "0.0.1-security",
+    "handlebars": "^4.7.6",
     "hbs": "^4.1.1",
     "mongoose": "^5.10.11",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "stripe": "^8.120.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

@@ -1,6 +1,6 @@
 var express = require('express');
 var hbs = require('hbs');
-var csrf = require('csurf');
+// var csrf = require('csurf');
 var expressHbs = require('express-handlebars');
 var path = require('path');
 var mongoose = require('mongoose');
@@ -9,9 +9,10 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session')
 var passport = require('passport');
 var flash = require('connect-flash')
-
+var MongoStore = require('connect-mongo')(session);
 var app = express();
-
+const Handlebars = require('handlebars')
+const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access')
 
 
 require('dotenv').config();
@@ -32,7 +33,11 @@ db.once('open', ()=>{
 
 db.on('error' , console.error.bind(console,'connection error'));
 //view engine setups
-app.engine('.hbs',expressHbs({defaultLayout:'layout',extname:'.hbs' }));
+app.engine('.hbs',expressHbs(
+    {defaultLayout:'layout',extname:'.hbs',handlebars: allowInsecurePrototypeAccess(Handlebars) },
+    
+    
+    ));
 app.set('view engine','hbs');
 hbs.registerPartials(__dirname+'/views/partials')
 
@@ -49,31 +54,36 @@ app.use(session(
     {
     secret:'mysupersecret',
     resave:false ,
-    saveUninitialized:false}
+    saveUninitialized:false,
+    store:new MongoStore({mongooseConnection:mongoose.connection}),
+    cookie:{maxAge:100*60*1000}
+}
 ));
-app.use(csrf({ cookie: true }))
+// app.use(csrf({ cookie: true }))
 app.use(flash())
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(function (req, res, next) {
-    var token = req.csrfToken();
-    res.cookie('XSRF-TOKEN', token);
-    res.locals.csrfToken = token;
-    next();
-  });
+// app.use(function (req, res, next) {
+//     var token = req.csrfToken();
+//     res.cookie('XSRF-TOKEN', token);
+//     res.locals.csrfToken = token;
+//     next();
+//   });
 
-
+//Authentication state
   app.use(function(req,res,next){
       res.locals.login = req.isAuthenticated();
+      res.locals.session = req.session;
       next();
   })
   
 //ROUTES
 var index= require('./routes/index.js');
 var userRoutes = require('./routes/user')
+var productsRoutes = require('./routes/admin_products')
 
-
+app.use('/products',productsRoutes)
 app.use('/user', userRoutes);
 app.use('/', index);
 
