@@ -3,9 +3,6 @@ var Schema = mongoose.Schema;
 
 //Product Schema
 var ProductSchema = new Schema({
-    user:{
-        user:{type:Schema.Types.ObjectId, ref:'User'}
-    },
     title: {
         type:String,
         required:true,
@@ -24,7 +21,9 @@ var ProductSchema = new Schema({
     image:{
         type:String
     },
-   
+    user:{
+        user:{type:Schema.Types.ObjectId, ref:'User'}
+    }
     
 },  {timestamps:true});
 
