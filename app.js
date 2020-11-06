@@ -79,10 +79,12 @@ app.use(passport.session());
   })
   
 //ROUTES
-var index= require('./routes/index.js');
+var index= require('./routes/index');
 var userRoutes = require('./routes/user')
 var productsRoutes = require('./routes/admin_products')
+var categoriesRoutes = require('./routes/admin_categories')
 
+app.use('/categories',categoriesRoutes)
 app.use('/products',productsRoutes)
 app.use('/user', userRoutes);
 app.use('/', index);

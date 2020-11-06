@@ -16,10 +16,17 @@
         <img src="#" id="imgPreview" alt="img">
     </div>
 
+   
     <div class="form-group">
-        <label for="">Price</label>
-        <input type="number"  class="form-control" name="price" value="{{price}}" placeholder="Item price">
-    </div> 
+        <label for="" name="category">Category</label>
+        <select name="category" class="form-control" id="">
+            {{#each categories}}
+
+                <option value="{{slug}}">{{title }} </option>
+            {{/each }}
+        </select>
+    </div>
+
 
     <div class="form-group">
         <label for="">Description</label>
